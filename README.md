@@ -6,7 +6,8 @@
 
 ## Build & development
 
-Run `grunt` for building and `grunt serve` for preview.
+- Run `grunt` for building and `grunt serve` for preview.
+- Constants defined in app/scripts/constant.js file
 
 ## Testing
 
