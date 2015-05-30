@@ -14,8 +14,8 @@ angular.module('fr.redfroggy.swaggerApi.app').constant('Config',
             docApiPath:'/api-docs' //Must start with '/'
         },
         auth: {
-            path: '/api/2014-06/account/authentication', //Must start with '/'
-            appKey: '49226F8B790811CCC65C4EAE67B394A5CB610AC7316A1C5336A2A383D4EEC1D6'
+            path: '/api/account/authentication', //Must start with '/'
+            appKey: '#APP_KEY'
         }
     }
 );
