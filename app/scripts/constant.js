@@ -9,8 +9,8 @@
 angular.module('fr.redfroggy.swaggerApi.app').constant('Config',
     {
         server:{
-            baseUrl:'http://linkia-int.redfroggy.fr',
-            apiPath:'/api/2014-06/', //Must start with '/'
+            baseUrl:'http://localhost:8080',
+            apiPath:'/api/v1/', //Must start with '/'
             docApiPath:'/api-docs' //Must start with '/'
         },
         auth: {
