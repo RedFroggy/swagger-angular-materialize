@@ -1,0 +1,72 @@
+<div class="row">
+    <div class="card-panel">
+        <h4>{{apiInfo.description}}</h4><span><a href="">{{detailApi.resourcePath}}</a></span>
+    </div>
+    <div class="col s12 m6" ng-repeat="api in detailApi.apis">
+        <div class="card">
+            <div class="card-panel" ng-class="{
+                        'GET':'grey lighten-2',
+                        'POST':'teal lighten-2',
+                        'PUT':'yellow lighten-2',
+                        'DELETE':'red lighten-2',
+                        'PATCH':'light-blue lighten-2',
+                        'HEAD':'pink lighten-2'}[api.operations[0].method]">
+                <strong>{{api.operations[0].method}}</strong> {{api.description}}<br/>
+                <span>{{api.path}}</span>
+            </div>
+            <div class="card-content">
+                <p>{{api.operations[0].summary}} <span class="badge text-white">{{api.operations[0].parameters.length}} parameter(s)</span></p><br/>
+                <p>
+                    <input type="checkbox" disabled="disabled" class="filled-in" id="filled-in-box" ng-checked="api.operations[0].deprecated === 'true'" />
+                    <label for="filled-in-box">Deprecated</label>
+                </p><br/>
+                <p>Type:
+                    <a href="" ng-if="isDtoType(api.operations[0].type)" ng-click="onClickParameterType(api.operations[0].type)">{{api.operations[0].type}}</a>
+                    <span ng-if="!isDtoType(api.operations[0].type)">{{api.operations[0].type}}</span>
+                </p>
+            </div>
+            <div class="card-action">
+                <a ui-sref="api.resource({parentIndex:parentIndex,index:api.index})" href="" class="waves-effect black-text waves-light btn" ng-class="{
+                        'GET':'grey lighten-2',
+                        'POST':'teal lighten-2',
+                        'PUT':'yellow lighten-2',
+                        'DELETE':'red lighten-2',
+                        'PATCH':'light-blue lighten-2',
+                        'HEAD':'pink lighten-2'}[api.operations[0].method]"><i class="mdi-action-swap-vert"></i>Try api</a>
+                <a href="" ng-click="onClickStatBtn(api)" class="waves-effect black-text waves-light btn" ng-class="{
+                        'GET':'grey lighten-2',
+                        'POST':'teal lighten-2',
+                        'PUT':'yellow lighten-2',
+                        'DELETE':'red lighten-2',
+                        'PATCH':'light-blue lighten-2',
+                        'HEAD':'pink lighten-2'}[api.operations[0].method]" ng-if="hasStats($index)"><i class="mdi-editor-insert-chart"></i>Stats</a>
+            </div>
+        </div>
+    </div>
+    <div id="chartModal" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <canvas class="chart chart-line" legend="true" colours="colors" options="options" series="series" data="stats" labels="labels"></canvas>
+        </div>
+        <div class="modal-footer">
+            <a href="" ng-click="onCloseModal('chartModal')" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+    <div id="typeObjectModal" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <fieldset>
+                <legend><strong>{{dto.id}}</strong></legend>
+                    <span class="col s12" ng-repeat="(key,value) in dto.properties | orderBy:key">
+                        <span ng-if="!value.items.type && value.type && !isDtoType(value.type)"><strong>{{key}}</strong>: <span class="red-text">{{value.type}}</span></span>
+                        <span ng-if="!value.items.type && value.type && isDtoType(value.type)"><strong>{{key}}</strong>: <a href="" ng-click="onClickParameterType(value.type)">{{value.type}}</a></span>
+                        <span>
+                            <span ng-if="value.items.type && isDtoType(value.items.type)"><strong>{{key}}</strong>:<a href="" ng-click="onClickParameterType(value.items.type)">[{{value.items.type}}]</a></span></span>
+                            <span ng-if="value.items.type && !isDtoType(value.items.type)"><strong>{{key}}</strong>: <span class="red-text">[{{value.items.type}}]</span></span>
+                        </span>
+                    </span>
+            </fieldset>
+        </div>
+        <div class="modal-footer">
+            <a href="" ng-click="onCloseModal('typeObjectModal')" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+</div>

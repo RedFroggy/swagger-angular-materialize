@@ -1,0 +1,21 @@
+<div id="loginModal" class="modal" ng-controller="LoginModalController">
+    <form name="loginForm" role="form">
+        <div class="modal-content">
+            <h4>Authentication</h4>
+            <div class="row">
+                <div class="input-field">
+                    <input id="login" name="login" ng-model="login" required="required" type="text" class="validate">
+                    <label for="login">Login</label>
+                </div>
+                <div class="input-field">
+                    <input id="password" name="password" ng-model="password" required="required" type="text" class="validate">
+                    <label for="password">Password</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="" class="modal-action modal-close waves-effect waves-red btn-flat"><i class="mdi-navigation-close left"></i>Close</a>
+            <a href="" ng-click="onClickLogin(login,password)" class="modal-action waves-effect waves-red btn-flat" ng-disabled="loginForm.$invalid"><i class="mdi-action-done left"></i>Send</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,105 @@
+<br/>
+<a href="#/api/detail/{{parentIndex}}" class="btn red darken-2 mdi-navigation-arrow-back" ui-sref="api.detail({index:parentIndex})" title="Back"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Back</a>
+<div class="card-panel">
+    <h4>{{apiInfo.description}}</h4><span><a href="">{{apiDetail.path}}</a></span></span>
+</div>
+<form name="apiDetailForm">
+    <div>
+        <div class="card-panel" ng-class="{
+                        'GET':'grey lighten-2',
+                        'POST':'teal lighten-2',
+                        'PUT':'yellow lighten-2',
+                        'DELETE':'red lighten-2',
+                        'PATCH':'light-blue lighten-2',
+                        'HEAD':'pink lighten-2'}[apiDetail.operations[0].method]"><strong>{{apiDetail.operations[0].method}}</strong>&nbsp;
+            <span>{{apiDetail.description}}</span>
+        </div>
+        <blockquote>
+            <p>{{apiDetail.operations[0].summary}}</p>
+            <p>{{apiDetail.operations[0].notes}}</p>
+        </blockquote>
+    </div>
+    <br/>
+    <div ng-if="apiDetail.operations[0].parameters.length > 0">
+        <h4>Request url</h4>
+        <div>
+            <p><a href="">{{getRequestUrl(apiDetail)}}</a></p>
+        </div>
+        <a href="" ng-click="send(apiDetail)" class="text-black btn right waves-effect waves-light" ng-class="{
+                        'GET':'grey lighten-2',
+                        'POST':'teal lighten-2',
+                        'PUT':'yellow lighten-2',
+                        'DELETE':'red lighten-2',
+                        'PATCH':'light-blue lighten-2',
+                        'HEAD':'pink lighten-2'}[apiDetail.operations[0].method]" ng-disabled="apiDetailForm.$invalid">Send <i class="mdi-content-send right"></i></a>
+        <h4>Parameters</h4>
+        <table class="bordered responsive-table">
+            <thead>
+            <th>Parameter</th>
+            <th>Description</th>
+            <th>Parameter type</th>
+            <th>Http parameter type</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="parameter in apiDetail.operations[0].parameters">
+                <td ng-if="parameter.paramType !== 'body'">
+                    <div class="input-field">
+                        <input id="{{parameter.name}}" name="parameter{{$index}}" type="text" ng-model="parameter.value" ng-required="parameter.required" />
+                        <label for="{{parameter.name}}">{{parameter.name}}</label>
+                    </div>
+                </td>
+                <td ng-if="parameter.paramType === 'body'">
+                    <textarea class="materialize-textarea" placeholder="{{parameter.name}}" ng-model="parameter.dataJson" ng-required="true" rows="10"></textarea><br/>
+                    <button type="button" ng-click="generateJSON(parameter)" class="text-black btn waves-effect waves-light" ng-class="{
+                        'GET':'grey lighten-2',
+                        'POST':'teal lighten-2',
+                        'PUT':'yellow lighten-2',
+                        'DELETE':'red lighten-2',
+                        'PATCH':'light-blue lighten-2',
+                        'HEAD':'pink lighten-2'}[apiDetail.operations[0].method]" >Generate JSON</button>
+                </td>
+                <td>{{parameter.description}}</td>
+                <td>{{parameter.type}}</td>
+                <td>{{parameter.paramType}}</td>
+            </tr>
+            <tr ng-if="apiDetail.operations[0].method === 'PATCH'">
+                <td>
+                    <textarea class="materialize-textarea" placeholder="dto" ng-model="data.patchJson" ng-required="true" rows="10"></textarea><br/>
+                    <button type="button" ng-click="generateJSON()" class="text-black btn waves-effect waves-light" ng-class="{
+                        'GET':'grey lighten-2',
+                        'POST':'teal lighten-2',
+                        'PUT':'yellow lighten-2',
+                        'DELETE':'red lighten-2',
+                        'PATCH':'light-blue lighten-2',
+                        'HEAD':'pink lighten-2'}[apiDetail.operations[0].method]">Generate JSON</button>
+                </td>
+                <td>Patch dto</td>
+                <td>body</td>
+                <td>{{apiDetail.operations[0].items.$ref}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="bodyModal" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <div class="card-panel">
+                <h4>{{apiInfo.description}}</h4>
+                <p><a href="">{{getRequestUrl(apiDetail)}}</a></p>
+                <p>Date: {{apiDetail.date | date:'dd/MM/yyyy'}}</p>
+            <a class="waves-effect waves-light btn" ng-class="{
+                        'GET':'grey lighten-2',
+                        'POST':'teal lighten-2',
+                        'PUT':'yellow lighten-2',
+                        'DELETE':'red lighten-2',
+                        'PATCH':'light-blue lighten-2',
+                        'HEAD':'pink lighten-2'}[apiDetail.operations[0].method]">{{apiDetail.operations[0].method}}</a>&nbsp;<a ng-if="apiDetail.status" class="waves-effect waves-light btn" ng-class="{'true':'green lighten-2', 'false':'red lighten-2'}[apiDetail.status >= 200 && apiDetail.status < 300]">{{apiDetail.status}}</a>
+            </div>
+            <div class="card-panel">
+                <pre><code highlight>{{apiDetail.message}}</code></pre>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+</form>
